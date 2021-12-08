@@ -1,3 +1,4 @@
+# https://towardsdatascience.com/face-mask-detection-using-darknets-yolov3-84cde488e5a1
 import glob
 import xml.etree.ElementTree as ET
 from tqdm import tqdm
