@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 
 
 log_folder_location = "logs/"
-file_name = "efficient_net_10_epoch_log.txt"
+file_name = "efficient_net_10_epoch_no_schedule_log.txt"
 
 
 def parse_logs():
@@ -52,7 +52,7 @@ def plot_helper(data_arr, max_epoch, title, y_label):
 if __name__ == '__main__':
     train_acc_logs, validation_acc_logs, train_loss_logs, validation_loss_logs, max_epoch = parse_logs()
     data_arr = [(train_acc_logs, "-o", "train"), (validation_acc_logs, "--o", "validation")]
-    plot_helper(data_arr, max_epoch, "acc", "Accuracy")
+    plot_helper(data_arr, max_epoch, "With no learning rate scheduler, Accuracy", "Accuracy")
 
     data_arr = [(train_loss_logs, "-o", "train"), (validation_loss_logs, "--o", "validation")]
-    plot_helper(data_arr, max_epoch, "Loss", "Loss")
+    plot_helper(data_arr, max_epoch, "With no learning rate scheduler, Loss", "Loss")

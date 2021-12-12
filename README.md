@@ -7,7 +7,6 @@ This project is a CSE 490/599 final project.
 Check out our project video: TODO
 
 
-
 ## Introduction
 
 ### What is the problem
@@ -20,7 +19,7 @@ We use the datasets provided on Kaggle: [source 1](https://www.kaggle.com/ashish
 
 We tried one approach for each dataset. The first dataset contains one people's face with and without mask each image. In total, the whole dataset contains 11.8k images. 
 
-The second dataset contains people wearing and not wearing face masks. Each photo has different backgrounds and may contain multiple people. There is also a descriptive file that describes the bounding box of people's faces. In total, the whole dataset contains 853 images. 
+The second dataset contains people wearing and not wearing face masks. Each photo has different backgrounds and may contain multiple people. There is also a descriptive file that describes the bounding box of people's faces. In total, the whole dataset contains 853 images. In our second approach, we used 95% of the images for training and 5% for validation. 
 
 ### Team
 
@@ -32,7 +31,7 @@ Bowen Xu
 
 ### What techniques did we use?
 
-We started the training with the pretrained EfficientNetV1 model. We use EfficientNetV1-b5 model with ImageNet pretrained weight first. Here are the initial configuration of optimization and hyper parameters. 
+We started the training with the pretrained EfficientNetV1 model. We use EfficientNetV1-b5 model with ImageNet pretrained weights first. Here are the initial configuration of optimization and hyper parameters. 
 
 - Optimizer: SGD
 
@@ -62,15 +61,38 @@ We found out that the first dataset and the nature of binary classification was 
 | Original configuration (see above) | 98.8%  |
 | 20 epochs                          | 98.1%  |
 | b0 model                           | 98.8%  |
-| b0 model, no pre-train             | 96.2%  |
-| b5 model, no pre-train             | 98.4%  |
+| b0 model, no pretrained weights    | 96.2%  |
+| b5 model, no pretrained weights    | 98.4%  |
 | no learning rate scheduler         | 68.6%  |
 
-TODO generate graphs
+|                                                                                                                                        |                                                                                                                               |
+| :------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------: |
+| <img src="graphs/Original Configuration (10 epochs), Accuracy.png" alt="Original Configuration (10 epochs), Accuracy" width="100%;" /> | <img src="graphs/Original Configuration (10 epochs), Loss.png" alt="Original Configuration (10 epochs), Loss" width="100%;"/> |
 
-We then tried our model with video frames. We used the OpenCV package to extract video frames and fed them to our model. The results from the video were bad - almost all frames are detected as "wearing a mask". During the investigation, we found that the first dataset only contained people's faces with little human body and background . A video feed from the real world, however, almost always contains a complex background. 
+|                                                                                                                                        |                                                                                                                               |
+| :------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------: |
+| <img src="graphs/With 20 epochs, Accuracy.png" alt="With 20 epochs, Accuracy" width="100%;" /> | <img src="graphs/With 20 epochs, Loss.png" alt="With 20 epochs, Loss" width="100%;"/> |
 
-To use our initial model as a real-time face mask detection tool, we then proposed the following pipeline. Firstly, we need another model to extract faces from a video frame. Secondly, we feed the model with use the model to predict image. We quickly found that the face extraction model is also an object detection model by itself. Thus we decided to look for one uniform solution that's quick, accurate, and in real-time. 
+|                                                                                                                                        |                                                                                                                               |
+| :------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------: |
+| <img src="graphs/With the b0 model, Accuracy.png" alt="With the b0 model, Accuracy" width="100%;" /> | <img src="graphs/With the b0 model, Loss.png" alt="With the b0 model, Loss" width="100%;"/> |
+
+|                                                                                                                                        |                                                                                                                               |
+| :------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------: |
+| <img src="graphs/With the b0 model and no pretrained weights, Accuracy.png" alt="With the b0 model and no pretrained weights, Accuracy" width="100%;" /> | <img src="graphs/With the b0 model and no pretrained weights, Loss.png" alt="With the b0 model and no pretrained weights, Loss" width="100%;"/> |
+
+|                                                                                                                                        |                                                                                                                               |
+| :------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------: |
+| <img src="graphs/With the b5 model and no pretrained weights, Accuracy.png" alt="With the b5 model and no pretrained weights, Accuracy" width="100%;" /> | <img src="graphs/With the b5 model and no pretrained weights, Loss.png" alt="With the b5 model and no pretrained weights, Loss" width="100%;"/> |
+
+|                                                                                                                                        |                                                                                                                               |
+| :------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------: |
+| <img src="graphs/With no learning rate scheduler, Accuracy.png" alt="With no learning rate scheduler, Accuracy" width="100%;" /> | <img src="graphs/With no learning rate scheduler, Loss.png" alt="With no learning rate scheduler, Loss" width="100%;"/> |
+
+
+We then tried our model with video frames. We used the OpenCV package to extract video frames and fed them to our model. The results from the video were bad - almost all frames are detected as "wearing a mask". During the investigation, we found that the first dataset only contained people's faces with little human body and background. A video feed from the real world, however, almost always contains a complex background. 
+
+To use our initial model in a real-time face mask detection tool, we proposed the following pipeline. Firstly, we need another model to extract faces from a video frame. Secondly, we feed the model with use the model to predict image. We quickly found that the face extraction model is also an object detection model by itself. Thus we decided to look for one uniform solution that's quick, accurate, and in real-time. 
 
 ### More investigation leads to YOLOv4
 
@@ -86,7 +108,7 @@ Upon more research, we discovered and decided to use a state of the art objectio
 
 We trained our model for about 10 hours and reach a best mAP of 96%. 
 
-<img src="chart_mask_yolo.png" alt="chart_mask_yolo" style="zoom:67%; float:left;" />
+<img src="chart_mask_yolo.png" alt="chart_mask_yolo" style="zoom:50%; float:left;" />
 
 We tested the our best YOLO model with a video recording. In the video, Mike put on and took off the masks for multiple times. Our video model quickly and accurately responded to Mike's movements and updated the prediction correctly. 
 
@@ -101,8 +123,6 @@ We trained our face mask detection model that achieved a best mAP of 96% with lo
 ### Next steps
 
 Our model was efficient - it only took 23ms to analyze a video frame. Thus a future step would be to deploy this to a server with more compute power to allow real-time mask detection. 
-
-
 
 ## References
 
