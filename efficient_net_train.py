@@ -122,8 +122,8 @@ def accuracy(y_pred, y):
 
 
 def train_and_valid(model, train_loader, val_loader, epoch_i):
-    # schedule = {0: 0.09, 5: 0.01, 15: 0.001, 20: 0.0001, 30: 0.00001}
-    schedule = {0: 0.09}
+    schedule = {0: 0.09, 5: 0.01, 15: 0.001, 20: 0.0001, 30: 0.00001}
+    # schedule = {0: 0.09}
     if epoch_i in schedule:
         print("found new schedule, overriding optimizer learning rate")
         new_lr = schedule[epoch_i]
