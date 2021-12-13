@@ -92,7 +92,7 @@ We found out that the first dataset and the nature of binary classification was 
 
 We then tried our model with video frames. We used the OpenCV package to extract video frames and fed them to our model. The results from the video were bad - almost all frames are detected as "wearing a mask". During the investigation, we found that the first dataset only contained people's faces with little human body and background. A video feed from the real world, however, almost always contains a complex background. 
 
-To use our initial model in a real-time face mask detection tool, we proposed the following pipeline. Firstly, we need another model to extract faces from a video frame. Secondly, we feed the model with use the model to predict image. We quickly found that the face extraction model is also an object detection model by itself. Thus we decided to look for one uniform solution that's quick, accurate, and in real-time. 
+To use our initial model in a real-time face mask detection tool, we proposed the following pipeline. Firstly, we need another model to extract faces from a video frame. Secondly, we feed the EfficientNet model with the extracted face area. We quickly found that the face extraction model is also an object detection model by itself. Thus we decided to look for one uniform solution that's quick, accurate, and in real-time. 
 
 ### More investigation leads to YOLOv4
 
@@ -122,7 +122,9 @@ We trained our face mask detection model that achieved a best mAP of 96% with lo
 
 ### Next steps
 
-Our model was efficient - it only took 23ms to analyze a video frame. Thus a future step would be to deploy this to a server with more compute power to allow real-time mask detection. 
+- Our model was efficient - it only took 23ms to analyze a video frame. Thus a future step would be to deploy this to a server with more compute power to allow real-time mask detection. 
+
+- One important area of improvement is the dataset. Future researchers should consider adding more photos with various types of masks. This can make the dataset more representative and the models can generalize better. 
 
 ## References
 
