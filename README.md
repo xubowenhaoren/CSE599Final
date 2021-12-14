@@ -4,7 +4,7 @@ Aiming to be a better real-time mask detection tool.
 
 This project is a CSE 490/599 final project. 
 
-Check out our project video: TODO
+Check out our project video: https://www.youtube.com/watch?v=AXkZknxxtMQ
 
 
 ## Introduction
